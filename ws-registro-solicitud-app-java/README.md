@@ -40,8 +40,6 @@ graph TD
     C --> K[message]
     C --> L[RequesDTO.java]
     C --> M[ResponseDTO.java]
-    K --> N[MessageDTO.java]
-    K --> O[MessageCreaSolicitudDTO.java]
 
     D --> P[Mapper.java]
 
@@ -49,13 +47,8 @@ graph TD
 
     Z --> R[MessageService.java]
     Z --> T[Azure]
-    T --> V[AzureServiceBusMessageServiceCreaSolicitud.java]
 
-    F --> U[SolicitudRepository.java]
-    F --> S[SolicitudEntity.java]
 
-    G --> W[RegistroSolicitudServices.java]
-    G --> X[RegistroSoliciudSerivesImpl.java]
 
 ```
 
