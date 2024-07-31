@@ -1,0 +1,17 @@
+com\ngmartinezs\wsmscuentaappjava\controller\WsMsCuentasController.class
+com\ngmartinezs\wsmscuentaappjava\repositories\CuentaRepository.class
+com\ngmartinezs\wsmscuentaappjava\dto\message\MessageSolicitudDTO$Body.class
+com\ngmartinezs\wsmscuentaappjava\messaging\MessageService.class
+com\ngmartinezs\wsmscuentaappjava\model\Cuenta.class
+com\ngmartinezs\wsmscuentaappjava\WsMsCuentaAppJavaApplication.class
+com\ngmartinezs\wsmscuentaappjava\dto\ResponseDTO.class
+com\ngmartinezs\wsmscuentaappjava\services\CuentaServicesImplement.class
+com\ngmartinezs\wsmscuentaappjava\mapper\CuentaMapper.class
+com\ngmartinezs\wsmscuentaappjava\repositories\CuentaEntity.class
+com\ngmartinezs\wsmscuentaappjava\messaging\azure\MessageServiceBusCreaCuenta.class
+com\ngmartinezs\wsmscuentaappjava\dto\message\MessageSolicitudDTO.class
+com\ngmartinezs\wsmscuentaappjava\dto\message\MessageDTO$Header.class
+com\ngmartinezs\wsmscuentaappjava\dto\message\MessageDTO.class
+com\ngmartinezs\wsmscuentaappjava\services\CuentaServices.class
+com\ngmartinezs\wsmscuentaappjava\dto\RequestDTO.class
+com\ngmartinezs\wsmscuentaappjava\ApplicationStartupListener.class
