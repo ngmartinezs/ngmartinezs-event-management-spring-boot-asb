@@ -18,7 +18,7 @@ Este proyecto ejemplifica el funcionamiento de un sistema basado en eventos util
 
 
 ## Subproyectos
-1. **ws-registro-solicitud-app-java**: Permite el registro de una solicitud de afiliación a un producto.
+1. **ws-registro-solicitud-app-java**: Este subproyecto permite desplegar un servicio web que expone un endpoint y recurso para realizar la solicitud de creacion de un registro a un producto, pasando la informacion del cliente y el producto.
 2. **ws-ms-cuentas-app-java**: Contiene un componente que se suscribe a una cola y un topic en Azure Service Bus, activándose tras el registro de una solicitud.
 3. **ws-ms-clientes-app-java**: Contiene un componente Spring Boot que atiende los registros cuando se crea una solicitud de afiliación.
 
@@ -50,13 +50,21 @@ C -- crearCliente Command --> E[ws-ms-clientes-app-java]
 
 Este proyecto es un ejemplo de cómo implementar un sistema distribuido basado en eventos utilizando Java 21 y Spring Boot. Se utiliza Azure Service Bus para la mensajería y coordinación entre los servicios.
 
-## Arquitectura del Sistema
+## Arquitectura de Contexto
 
-![Arquitectura del Sistema](ruta/a/tu/diagrama.png)
+A continuación se muestra un diagrama de la arquitectura de contexto que indica como se presenta la interaccion entre los servicios y los eventos generados.
 
-1. **ws-registro-solicitud-app-java**: Envía mensajes a una cola de Azure Service Bus cuando se registra una solicitud de afiliación.
-2. **ws-ms-cuentas-app-java**: Se suscribe a la cola y topic de Azure Service Bus para procesar las solicitudes de afiliación.
-3. **ws-ms-clientes-app-java**: Procesa las solicitudes y realiza las operaciones necesarias para la afiliación.
+```mermaid
+graph TD
+A[ws-registro-solicitud-app-java] -- registra --> B[db-solicitud]
+A -- creaSolicitudEvent --> C[topic:creacion-solicitud-event]
+
+D[ws-ms-cuentas-app-java] -- suscribe --> C
+D -- creaCuentaCommand/jdbc --> E[db-cuentas]
+
+F[ws-ms-clientes-app-java] -- suscribe --> C
+F -- creaClienteCommand/jdbc --> G[db-clientes]
+```
 
 ## Pre-requisitos
 
@@ -70,25 +78,26 @@ Este proyecto es un ejemplo de cómo implementar un sistema distribuido basado e
 1. Clonar el repositorio:
 
    ```bash
-   git clone https://github.com/tu_usuario/tu_repositorio.git
-   cd tu_repositorio
+   git clone ngmartinezs-event-management-spring-boot-asb.git
+   cd ngmartinezs-event-management-spring-boot-asb
 
 2. Crear una cuenta de Azure y configurar un Service Bus.
 
-Crear un namespace en Azure Service Bus.
-Crear una cola y un topic.
-Obtener la cadena de conexión de Azure Service Bus y agregarla a los archivos de configuración de Spring Boot (application.properties o application.yml).
+    - Crear un namespace en Azure Service Bus.
+    - Crear una cola y un topic.
+    - Obtener la cadena de conexión de Azure Service Bus y agregarla a los archivos de configuración de Spring Boot (application.properties o application.yml).
 
 3. Configurar los subproyectos para que utilicen la cadena de conexión de Azure Service Bus.
 
 ## Subproyectos
 ### ws-registro-solicitud-app-java
-Este subproyecto permite registrar una solicitud de afiliación a un producto.
+Este subproyecto permite desplegar un servicio web que expone un endpoint y recurso para realizar la solicitud de creacion de un registro a un producto, pasando la informacion del cliente y el producto.
 
 #### Funciones Principales:
 
-API REST para registrar solicitudes.
-Envío de mensajes a Azure Service Bus.
+- API REST para registrar solicitudes.
+- Registrar la solicitud recibida en una base de datos de solicitud.
+- Uan vez es confirmado que la solicitud fue creada se genera un menssage hacia Azure Service Bus informando a un topic indicando que una solicitud ha sido creada.
 ##### Configuración:
 ###### application.properties
 ```
@@ -101,11 +110,12 @@ cd ws-registro-solicitud-app-java
 mvn spring-boot:run
 ```
 ### ws-ms-cuentas-app-java
-Este subproyecto contiene un componente que se suscribe a una cola y un topic en Azure Service Bus, activándose tras el registro de una solicitud.
+Este subproyecto contiene un componente que se suscribe a una y un topic en Azure Service Bus, activándose tras el registro de una solicitud.
 
 #### Funciones Principales: 
 1. Escucha de mensajes de la cola y topic de Azure Service Bus.
-2. Procesamiento de solicitudes de afiliación.
+2. Procesamiento de solicitudes de registro.
+3. Efectua la creación de una cuenta asociada al mensaje de la solicitud recibida.
 ##### Configuración:
 ###### application.properties
 ```
@@ -118,11 +128,12 @@ cd ws-registro-solicitud-app-java
 mvn spring-boot:run
 ```
 ### ws-ms-clientes-app-java
-Este subproyecto contiene un componente Spring Boot que atiende los registros cuando se crea una solicitud de afiliación.
+Este subproyecto contiene un componente Spring Boot que atiende los registros cuando se crea una solicitud de registro a un producto, gestionando la creacion del cliente asociado al producto.
 
 #### Funciones Principales:
-1. Procesamiento de solicitudes de afiliación.
+1. Procesamiento de solicitudes de afilia.
 2. Creación de cuentas de clientes.
+3. Efectua la creación de un cliente asociada al mensaje de la solicitud recibida.
 ##### Configuración:
 ###### application.properties
 ```
