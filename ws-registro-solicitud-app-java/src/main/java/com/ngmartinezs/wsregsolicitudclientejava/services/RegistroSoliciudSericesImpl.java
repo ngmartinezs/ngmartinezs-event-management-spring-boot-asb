@@ -20,7 +20,7 @@ import com.ngmartinezs.wsregsolicitudclientejava.repositories.SolictudEntity;
 
 
 @Service
-public class RegistroSoliciudSerivesImpl implements RegistroSolicitudServices{
+public class RegistroSoliciudSericesImpl implements RegistroSolicitudServices{
     
       
         @Autowired
